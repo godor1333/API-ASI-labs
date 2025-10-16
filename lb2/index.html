@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SportShop — Спортивные товары</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="light-theme">
+  <header>
+    <h1>SportShop</h1>
+    <nav class="categories hidden">
+      <button class="category-btn active" data-category="all">Все товары</button>
+      <button class="category-btn" data-category="ball">Мячи</button>
+      <button class="category-btn" data-category="shoes">Обувь</button>
+      <button class="category-btn" data-category="equipment">Инвентарь</button>
+      <button class="category-btn" data-category="accessories">Аксессуары</button>
+    </nav>
+    <div class="header-actions">
+      <button id="theme-toggle" class="theme-btn">🌙</button>
+      <div id="cart-icon" class="cart-icon hidden">
+        🛒 <span id="cart-count">0</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Главная страница -->
+    <section id="home" class="home-screen">
+      <div class="home-content">
+        <h2>Добро пожаловать в SportShop!</h2>
+        <p>Лучшие спортивные товары для тренировок, соревнований и активного отдыха. Качество, надёжность и стиль — всё в одном месте.</p>
+        <button id="go-to-catalog" class="btn-primary">Перейти в каталог</button>
+      </div>
+    </section>
+
+    <!-- Каталог (изначально скрыт) -->
+    <section id="catalog-section" class="hidden">
+      <div id="catalog" class="catalog-grid"></div>
+    </section>
+
+    <!-- Модальное окно корзины -->
+    <section id="cart-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>Ваша корзина</h2>
+        <div id="cart-items"></div>
+        <p id="cart-total">Итого: 0 ₽</p>
+        <button id="checkout-btn" disabled>Оформить заказ</button>
+        <button id="close-cart">Закрыть</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
