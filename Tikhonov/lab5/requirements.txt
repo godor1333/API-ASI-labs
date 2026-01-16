@@ -1,0 +1,8 @@
+requests
+SQLAlchemy
+psycopg2-binary
+kafka-python-ng
+transformers
+torch
+sentence-transformers
+numpy
