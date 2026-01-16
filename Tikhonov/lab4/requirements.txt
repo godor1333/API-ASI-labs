@@ -1,0 +1,2 @@
+pygame==2.6.0
+sqlalchemy==2.0.23
