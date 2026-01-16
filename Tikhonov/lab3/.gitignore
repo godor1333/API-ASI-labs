@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Uploads and outputs
+backend/uploads/*
+backend/outputs/*
+!backend/uploads/.gitkeep
+!backend/outputs/.gitkeep
+
+# Tests
+tests/__pycache__/
+tests/screenshots/
+tests/test_image.png
+.pytest_cache/
+.coverage
+htmlcov/
+# Не игнорируем test_image.jpg - это тестовый файл для использования в тестах
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+

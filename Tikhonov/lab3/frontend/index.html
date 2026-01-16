@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор мемов</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎭 Генератор мемов</h1>
+            <div id="auth-section">
+                <div id="login-form" class="auth-form">
+                    <h2>Вход</h2>
+                    <input type="text" id="login-username" placeholder="Имя пользователя" required>
+                    <input type="password" id="login-password" placeholder="Пароль" required>
+                    <button onclick="login()">Войти</button>
+                    <p>Нет аккаунта? <a href="#" onclick="showRegister()">Зарегистрироваться</a></p>
+                </div>
+                <div id="register-form" class="auth-form" style="display: none;">
+                    <h2>Регистрация</h2>
+                    <input type="text" id="register-username" placeholder="Имя пользователя" required>
+                    <input type="email" id="register-email" placeholder="Email" required>
+                    <input type="password" id="register-password" placeholder="Пароль" required>
+                    <button onclick="register()">Зарегистрироваться</button>
+                    <p>Уже есть аккаунт? <a href="#" onclick="showLogin()">Войти</a></p>
+                </div>
+                <div id="user-info" style="display: none;">
+                    <p>Привет, <span id="username-display"></span>!</p>
+                    <button onclick="logout()">Выйти</button>
+                </div>
+            </div>
+        </header>
+
+        <main id="main-content" style="display: none;">
+            <div class="upload-section">
+                <h2>Загрузите изображение</h2>
+                <input type="file" id="image-input" accept="image/*">
+                <button onclick="uploadImage()">Загрузить</button>
+                <div id="upload-status"></div>
+            </div>
+
+            <div class="meme-section" id="meme-section" style="display: none;">
+                <h2>Создайте мем</h2>
+                <div id="text-inputs">
+                    <div class="text-input-group" data-index="0">
+                        <input type="text" class="text-input" placeholder="Введите текст для мема" data-index="0">
+                        <div class="alignment-buttons">
+                            <button class="align-btn" data-alignment="top" data-index="0" onclick="setAlignment(0, 'top')" title="Сверху">⬆️</button>
+                            <button class="align-btn active" data-alignment="center" data-index="0" onclick="setAlignment(0, 'center')" title="По центру">➖</button>
+                            <button class="align-btn" data-alignment="bottom" data-index="0" onclick="setAlignment(0, 'bottom')" title="Снизу">⬇️</button>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="addTextInput()">+ Добавить еще текст</button>
+                <button onclick="createMeme()">Создать мем</button>
+                <div id="meme-status"></div>
+            </div>
+
+            <div class="meme-list-section">
+                <h2>Мои мемы</h2>
+                <div id="meme-list"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
