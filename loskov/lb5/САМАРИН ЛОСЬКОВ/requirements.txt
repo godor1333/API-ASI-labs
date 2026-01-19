@@ -1,0 +1,37 @@
+# Основные зависимости
+torch>=2.0.0
+torchvision>=0.15.0
+transformers>=4.30.0
+diffusers>=0.21.0
+accelerate>=0.20.0
+
+# ComfyUI интеграция
+websocket-client>=1.6.0
+requests>=2.31.0
+aiohttp>=3.8.0
+
+# Обработка видео и изображений
+opencv-python>=4.8.0
+Pillow>=10.0.0
+imageio>=2.31.0
+imageio-ffmpeg>=0.4.9
+numpy>=1.24.0
+
+# CLIP и ImageReward
+# CLIP доступен через transformers, не нужен отдельный пакет
+sentencepiece>=0.1.99
+
+# Веб-интерфейс
+flask>=2.3.0
+flask-cors>=4.0.0
+plotly>=5.17.0
+pandas>=2.0.0
+
+# Утилиты
+tqdm>=4.66.0
+pyyaml>=6.0
+python-dotenv>=1.0.0
+
+# Тестирование
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
