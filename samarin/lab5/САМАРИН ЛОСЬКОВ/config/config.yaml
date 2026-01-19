@@ -1,0 +1,75 @@
+# Конфигурация проекта
+
+# ComfyUI настройки
+comfyui:
+  host: "localhost"
+  port: 8188
+  workflow_path: "config/comfyui_workflow.json"
+
+# Модели
+models:
+  svd:
+    model_id: "stabilityai/stable-video-diffusion-img2vid-xt"
+    variant: "xt"  # или "xt-1-1"
+    num_frames: 25
+    num_inference_steps: 50
+    guidance_scale: 7.5
+  
+  sdxl:
+    model_id: "stabilityai/sdxl-turbo"
+    num_inference_steps: 4
+    guidance_scale: 0.0
+  
+  clip:
+    model_id: "openai/clip-vit-base-patch32"
+  
+  image_reward:
+    model_id: "BAAI/ImageReward"
+
+# Параметры генерации
+generation:
+  clip_duration: 2.0  # секунды на клип
+  fps: 24
+  target_duration: 10.0  # целевая длительность ролика в секундах
+  min_duration: 10.0
+  max_duration: 30.0
+  keyframe_generation:
+    num_keyframes: 3
+    method: "stub"  # "sdxl" для реальной генерации (требует 10+ ГБ), "stub" для демо без загрузки моделей
+
+# Webench2 настройки
+webench2:
+  frame_sampling:
+    method: "uniform"  # uniform, keyframes, adaptive
+    frames_per_second: 1  # сколько кадров в секунду анализировать
+  
+  metrics:
+    clip_score:
+      enabled: true
+      model: "openai/clip-vit-base-patch32"
+    
+    image_reward:
+      enabled: true
+      sample_rate: 0.5  # доля кадров для оценки
+    
+    stability:
+      enabled: true
+      check_duplicates: true
+      check_dark_frames: true
+      check_overexposed: true
+      brightness_threshold: 0.1  # порог для тёмных кадров
+      overexposure_threshold: 0.9  # порог для пересвеченных
+
+# Пути
+paths:
+  outputs: "outputs"
+  results: "results"
+  keyframes: "outputs/keyframes"
+  videos: "outputs/videos"
+  reports: "results/reports"
+
+# Регрессионный бенчмарк
+benchmark:
+  prompts_file: "prompts/benchmark_prompts.json"
+  save_comparisons: true
+  comparison_dir: "results/comparisons"

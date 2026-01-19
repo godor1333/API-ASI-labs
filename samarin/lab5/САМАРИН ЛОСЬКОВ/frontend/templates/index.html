@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webench2 - Аналитика генерации видео</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 30px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 30px;
+        }
+        
+        .tab {
+            padding: 15px 30px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            color: #666;
+            transition: all 0.3s;
+        }
+        
+        .tab:hover {
+            color: #667eea;
+        }
+        
+        .tab.active {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .video-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .video-card video {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .video-card-info {
+            padding: 15px;
+        }
+        
+        .video-card-info h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .metrics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .metric-badge {
+            background: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+        
+        .metric-badge.good {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .metric-badge.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .metric-badge.bad {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .chart-container {
+            margin: 20px 0;
+            height: 400px;
+        }
+        
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+        
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 Webench2 - Аналитика генерации видео</h1>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('videos')">Видео</button>
+            <button class="tab" onclick="switchTab('benchmark')">Бенчмарк</button>
+            <button class="tab" onclick="switchTab('comparisons')">Сравнения</button>
+            <button class="tab" onclick="switchTab('analytics')">Аналитика</button>
+        </div>
+        
+        <!-- Вкладка Видео -->
+        <div id="videos" class="tab-content active">
+            <h2>Сгенерированные видео</h2>
+            <div id="videos-list" class="video-grid">
+                <div class="loading">Загрузка...</div>
+            </div>
+        </div>
+        
+        <!-- Вкладка Бенчмарк -->
+        <div id="benchmark" class="tab-content">
+            <h2>Регрессионный бенчмарк</h2>
+            <div id="benchmark-list">
+                <div class="loading">Загрузка...</div>
+            </div>
+        </div>
+        
+        <!-- Вкладка Сравнения -->
+        <div id="comparisons" class="tab-content">
+            <h2>A/B Сравнение моделей</h2>
+            <div id="comparisons-list">
+                <div class="loading">Загрузка...</div>
+            </div>
+        </div>
+        
+        <!-- Вкладка Аналитика -->
+        <div id="analytics" class="tab-content">
+            <h2>Сводная аналитика</h2>
+            <div id="analytics-summary" class="summary-stats"></div>
+            <div id="analytics-charts"></div>
+        </div>
+    </div>
+    
+    <script>
+        function switchTab(tabName) {
+            // Убираем активный класс со всех вкладок
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Добавляем активный класс выбранной вкладке
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+            
+            // Загружаем данные для вкладки
+            if (tabName === 'videos') loadVideos();
+            else if (tabName === 'benchmark') loadBenchmark();
+            else if (tabName === 'comparisons') loadComparisons();
+            else if (tabName === 'analytics') loadAnalytics();
+        }
+        
+        async function loadVideos() {
+            const container = document.getElementById('videos-list');
+            container.innerHTML = '<div class="loading">Загрузка...</div>';
+            
+            try {
+                const response = await fetch('/api/videos');
+                const videos = await response.json();
+                
+                if (videos.length === 0) {
+                    container.innerHTML = '<div class="loading">Видео не найдены</div>';
+                    return;
+                }
+                
+                container.innerHTML = '';
+                
+                for (const video of videos) {
+                    const card = document.createElement('div');
+                    card.className = 'video-card';
+                    
+                    // Загружаем метрики
+                    const metricsResponse = await fetch(`/api/metrics/${video.name}`);
+                    const metrics = metricsResponse.ok ? await metricsResponse.json() : null;
+                    
+                    card.innerHTML = `
+                        <video controls>
+                            <source src="${video.path}" type="video/mp4">
+                        </video>
+                        <div class="video-card-info">
+                            <h3>${video.name}</h3>
+                            ${metrics ? renderMetrics(metrics) : '<p>Метрики не доступны</p>'}
+                        </div>
+                    `;
+                    
+                    container.appendChild(card);
+                }
+            } catch (error) {
+                container.innerHTML = `<div class="error">Ошибка загрузки: ${error.message}</div>`;
+            }
+        }
+        
+        function renderMetrics(metrics) {
+            let html = '<div class="metrics">';
+            
+            if (metrics.quality_index !== undefined) {
+                const badgeClass = metrics.quality_index > 0.7 ? 'good' : metrics.quality_index > 0.4 ? 'warning' : 'bad';
+                html += `<span class="metric-badge ${badgeClass}">Quality: ${(metrics.quality_index * 100).toFixed(1)}%</span>`;
+            }
+            
+            if (metrics.clip_score && metrics.clip_score.mean !== undefined) {
+                html += `<span class="metric-badge">CLIP: ${metrics.clip_score.mean.toFixed(3)}</span>`;
+            }
+            
+            if (metrics.image_reward && metrics.image_reward.mean !== undefined) {
+                html += `<span class="metric-badge">Reward: ${metrics.image_reward.mean.toFixed(3)}</span>`;
+            }
+            
+            html += '</div>';
+            return html;
+        }
+        
+        async function loadBenchmark() {
+            const container = document.getElementById('benchmark-list');
+            container.innerHTML = '<div class="loading">Загрузка...</div>';
+            
+            try {
+                const response = await fetch('/api/benchmark/runs');
+                const runs = await response.json();
+                
+                if (runs.length === 0) {
+                    container.innerHTML = '<div class="loading">Запуски бенчмарка не найдены</div>';
+                    return;
+                }
+                
+                let html = '<div class="video-grid">';
+                for (const run of runs) {
+                    html += `
+                        <div class="video-card">
+                            <div class="video-card-info">
+                                <h3>${run.model_version}</h3>
+                                <p>Промптов: ${run.num_prompts}</p>
+                                <p>Время: ${new Date(run.timestamp).toLocaleString('ru-RU')}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+                html += '</div>';
+                container.innerHTML = html;
+            } catch (error) {
+                container.innerHTML = `<div class="error">Ошибка загрузки: ${error.message}</div>`;
+            }
+        }
+        
+        async function loadComparisons() {
+            const container = document.getElementById('comparisons-list');
+            container.innerHTML = '<div class="loading">Загрузка...</div>';
+            
+            try {
+                const response = await fetch('/api/comparisons');
+                const comparisons = await response.json();
+                
+                if (comparisons.length === 0) {
+                    container.innerHTML = '<div class="loading">Сравнения не найдены</div>';
+                    return;
+                }
+                
+                let html = '<div class="video-grid">';
+                for (const comp of comparisons) {
+                    html += `
+                        <div class="video-card">
+                            <div class="video-card-info">
+                                <h3>${comp.model_a} vs ${comp.model_b}</h3>
+                                <p>Сравнений: ${comp.num_comparisons}</p>
+                                <p>Время: ${new Date(comp.timestamp).toLocaleString('ru-RU')}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+                html += '</div>';
+                container.innerHTML = html;
+            } catch (error) {
+                container.innerHTML = `<div class="error">Ошибка загрузки: ${error.message}</div>`;
+            }
+        }
+        
+        async function loadAnalytics() {
+            const summaryContainer = document.getElementById('analytics-summary');
+            const chartsContainer = document.getElementById('analytics-charts');
+            
+            summaryContainer.innerHTML = '<div class="loading">Загрузка...</div>';
+            chartsContainer.innerHTML = '';
+            
+            try {
+                const response = await fetch('/api/analytics/summary');
+                const summary = await response.json();
+                
+                summaryContainer.innerHTML = `
+                    <div class="stat-card">
+                        <h3>Всего видео</h3>
+                        <div class="value">${summary.total_videos}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Запусков бенчмарка</h3>
+                        <div class="value">${summary.total_benchmark_runs}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Средний Quality Index</h3>
+                        <div class="value">${(summary.average_quality_index * 100).toFixed(1)}%</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Средний CLIP Score</h3>
+                        <div class="value">${summary.average_clip_score.toFixed(3)}</div>
+                    </div>
+                `;
+            } catch (error) {
+                summaryContainer.innerHTML = `<div class="error">Ошибка загрузки: ${error.message}</div>`;
+            }
+        }
+        
+        // Загружаем данные при загрузке страницы
+        window.addEventListener('load', () => {
+            loadVideos();
+        });
+    </script>
+</body>
+</html>
