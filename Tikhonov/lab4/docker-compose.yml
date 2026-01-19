@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  match3-app:
+    build: .
+    container_name: match3_mmo
+    # Опционально: монтируем том для сохранения БД
+    volumes:
+      - ./match3.db:/app/match3.db
+    # Если приложение будет использовать GUI, понадобится X11 forwarding
+    # environment:
+    #   - DISPLAY=$DISPLAY
+    # devices:
+    #   - /dev/dri
+    #   - /dev/snd
+    # network_mode: host

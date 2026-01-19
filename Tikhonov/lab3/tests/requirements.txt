@@ -1,0 +1,5 @@
+pytest==7.4.3
+selenium==4.15.2
+webdriver-manager==4.0.1
+pillow==10.1.0
+
