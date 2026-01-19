@@ -1,0 +1,551 @@
+.coin-flip-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.user-info {
+  margin-bottom: 25px;
+  padding: 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+}
+
+.user-info h2 {
+  margin: 0;
+  font-size: 24px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.game-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.bet-amount {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 2px solid #e9ecef;
+}
+
+.bet-amount label {
+  font-weight: bold;
+  color: #333;
+  font-size: 16px;
+  min-width: 120px;
+  text-align: right;
+}
+
+.bet-amount input {
+  padding: 12px 15px;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  width: 120px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  background: white;
+  transition: all 0.3s;
+}
+
+.bet-amount input:focus {
+  border-color: #0056b3;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+}
+
+.bet-amount input:disabled {
+  background: #e9ecef;
+  border-color: #6c757d;
+  color: #6c757d;
+}
+
+.side-selection {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 2px solid #e9ecef;
+}
+
+.side-selection button {
+  padding: 15px 25px;
+  border: 3px solid #007bff;
+  background: white;
+  color: #007bff;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 0.3s;
+  min-width: 140px;
+  flex: 1;
+}
+
+.side-selection button.active {
+  background: #007bff;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+}
+
+.side-selection button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,123,255,0.2);
+}
+
+.side-selection button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.mode-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 2px solid #e9ecef;
+}
+
+.mode-selection label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #333;
+  font-size: 16px;
+  padding: 8px 16px;
+  background: white;
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s;
+}
+
+.mode-selection label:hover {
+  border-color: #007bff;
+}
+
+.mode-selection input {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.mode-hint {
+  font-size: 14px;
+  color: #6c757d;
+  text-align: center;
+  padding: 10px 15px;
+  background: white;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+  font-weight: 500;
+}
+
+.quick-bets {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 2px solid #e9ecef;
+}
+
+.quick-bet-btn {
+  padding: 12px 20px;
+  border: 2px solid #28a745;
+  background: white;
+  color: #28a745;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+  font-size: 15px;
+  min-width: 70px;
+}
+
+.quick-bet-btn:hover:not(:disabled) {
+  background: #28a745;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40,167,69,0.3);
+}
+
+.quick-bet-btn.active {
+  background: #28a745;
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(40,167,69,0.4);
+}
+
+.quick-bet-btn:disabled {
+  border-color: #6c757d;
+  background: #6c757d;
+  color: white;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.6;
+}
+
+/* Анимация монеты */
+.coin-container {
+  perspective: 1000px;
+  margin: 30px auto;
+  width: 160px;
+  height: 160px;
+}
+
+.coin {
+  width: 160px;
+  height: 160px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease-out;
+}
+
+.coin-front, .coin-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: bold;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  border: 12px solid #daa520;
+}
+
+/* Сторона "Орел" */
+.coin-front {
+  background: linear-gradient(145deg, #ffd700, #ffa500);
+  color: #8b4513;
+  transform: rotateY(0deg);
+}
+
+.coin-front::before {
+  content: "🦅";
+  font-size: 70px;
+}
+
+/* Сторона "1" */
+.coin-back {
+  background: linear-gradient(145deg, #ffd700, #ffa500);
+  color: #8b4513;
+  transform: rotateY(180deg);
+}
+
+.coin-back::before {
+  content: "1";
+  font-size: 54px;
+  font-weight: bold;
+}
+
+/* Показываем правильную сторону */
+.coin.heads {
+  transform: rotateY(0deg);
+}
+
+.coin.tails {
+  transform: rotateY(180deg);
+}
+
+/* Анимация вращения - точно 2 секунды */
+.coin.flipping {
+  animation: coinFlip 2s ease-in-out forwards;
+}
+
+@keyframes coinFlip {
+  0% {
+    transform: rotateY(0deg);
+  }
+  20% {
+    transform: rotateY(360deg);
+  }
+  40% {
+    transform: rotateY(720deg);
+  }
+  60% {
+    transform: rotateY(1080deg);
+  }
+  80% {
+    transform: rotateY(1440deg);
+  }
+  100% {
+    transform: rotateY(1800deg);
+  }
+}
+
+.flip-button {
+  padding: 18px 35px;
+  font-size: 18px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin: 20px 0;
+  font-weight: bold;
+  transition: all 0.3s;
+  box-shadow: 0 6px 12px rgba(0,123,255,0.3);
+  min-width: 220px;
+}
+
+.flip-button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,123,255,0.4);
+  background: linear-gradient(135deg, #0056b3, #004085);
+}
+
+.flip-button:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.bet-info {
+  margin: 20px 0;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 12px;
+  border-left: 5px solid #007bff;
+  border-right: 5px solid #007bff;
+}
+
+.bet-info p {
+  margin: 8px 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.bet-info .instruction {
+  font-size: 14px;
+  color: #6c757d;
+  font-style: italic;
+  margin-top: 12px;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px dashed #007bff;
+}
+
+.quick-mode-message {
+  padding: 20px;
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  border: 3px solid #ffd700;
+  border-radius: 12px;
+  color: #856404;
+  text-align: center;
+  margin: 20px 0;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(255,193,7,0.2);
+}
+
+.quick-mode-message p {
+  margin: 5px 0;
+}
+
+.quick-mode-message p:first-child {
+  font-size: 18px;
+}
+
+.quick-mode-message p:last-child {
+  font-size: 14px;
+  opacity: 0.8;
+  font-weight: normal;
+}
+
+.result {
+  padding: 25px;
+  border-radius: 15px;
+  margin-top: 25px;
+  font-size: 18px;
+  font-weight: bold;
+  animation: fadeIn 0.5s ease-in;
+  border: 4px solid;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.result.win {
+  background: linear-gradient(135deg, #d4edda, #c3e6cb);
+  border-color: #28a745;
+  color: #155724;
+}
+
+.result.lose {
+  background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+  border-color: #dc3545;
+  color: #721c24;
+}
+
+.result h3 {
+  margin: 0 0 20px 0;
+  font-size: 26px;
+}
+
+.result p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.result-amount {
+  font-size: 22px !important;
+  margin: 20px 0 !important;
+  padding: 15px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.3);
+}
+
+.new-balance {
+  font-size: 20px !important;
+  color: #333 !important;
+  margin-top: 20px !important;
+  padding-top: 20px;
+  border-top: 3px dashed currentColor;
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(25px) scale(0.95); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .coin-flip-container {
+    padding: 15px;
+    margin: 10px;
+  }
+  
+  .coin-container {
+    width: 130px;
+    height: 130px;
+  }
+  
+  .coin-front::before {
+    font-size: 55px;
+  }
+  
+  .coin-back::before {
+    font-size: 42px;
+  }
+  
+  .side-selection {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .side-selection button {
+    min-width: 100%;
+    padding: 12px 20px;
+  }
+  
+  .quick-bets {
+    gap: 8px;
+  }
+  
+  .quick-bet-btn {
+    padding: 10px 16px;
+    min-width: 60px;
+    font-size: 14px;
+  }
+  
+  .flip-button {
+    min-width: 100%;
+    padding: 16px 25px;
+    font-size: 16px;
+  }
+  
+  .bet-amount {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .bet-amount label {
+    min-width: auto;
+    text-align: center;
+  }
+  
+  .user-info h2 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .coin-container {
+    width: 110px;
+    height: 110px;
+  }
+  
+  .coin-front::before {
+    font-size: 45px;
+  }
+  
+  .coin-back::before {
+    font-size: 35px;
+  }
+  
+  .game-controls {
+    gap: 15px;
+  }
+  
+  .mode-hint {
+    font-size: 12px;
+  }
+  
+  .result h3 {
+    font-size: 22px;
+  }
+  
+  .result p {
+    font-size: 14px;
+  }
+}
+
+/* Плавные переходы для всех интерактивных элементов */
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Улучшение доступности */
+button:focus {
+  outline: 3px solid rgba(0,123,255,0.5);
+  outline-offset: 2px;
+}
+
+input:focus {
+  outline: 3px solid rgba(0,123,255,0.3);
+  outline-offset: 1px;
+}
