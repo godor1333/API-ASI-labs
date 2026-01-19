@@ -1,0 +1,11 @@
+{
+  "name": "beehive-blockchain",
+  "version": "1.0.0",
+  "description": "Blockchain node for BeeHive platform",
+  "scripts": {
+    "start": "npx ganache-cli --host 0.0.0.0 --port 8545 --deterministic"
+  },
+  "dependencies": {
+    "ganache-cli": "^6.12.2"
+  }
+}

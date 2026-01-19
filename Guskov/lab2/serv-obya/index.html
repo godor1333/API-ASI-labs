@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Сервис объявлений</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-container, .filter-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 6px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .ads-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .ad {
+            background: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            width: 250px;
+            position: relative;
+        }
+
+        .ad img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .ad h3 {
+            margin: 10px 0 5px;
+        }
+
+        .category {
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Сервис объявлений</h1>
+
+    <div class="form-container">
+        <h3>Добавить объявление</h3>
+        <input type="text" id="title" placeholder="Название объявления">
+        <textarea id="description" placeholder="Описание"></textarea>
+        <select id="category">
+            <option value="">Выберите категорию</option>
+            <option value="Техника">Техника</option>
+            <option value="Авто">Авто</option>
+            <option value="Недвижимость">Недвижимость</option>
+            <option value="Одежда">Одежда</option>
+        </select>
+        <input type="file" id="photo" accept="image/*">
+        <button onclick="addAd()">Добавить</button>
+    </div>
+
+    <div class="filter-container">
+        <h3>Фильтр по категории</h3>
+        <select id="filter" onchange="filterAds()">
+            <option value="">Все категории</option>
+            <option value="Техника">Техника</option>
+            <option value="Авто">Авто</option>
+            <option value="Недвижимость">Недвижимость</option>
+            <option value="Одежда">Одежда</option>
+        </select>
+    </div>
+
+    <div class="ads-container" id="adsContainer"></div>
+
+    <script>
+        let ads = JSON.parse(localStorage.getItem('ads')) || [];
+
+        function addAd() {
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const category = document.getElementById('category').value;
+            const photoInput = document.getElementById('photo');
+            if (!title || !description || !category || !photoInput.files[0]) {
+                alert('Пожалуйста, заполните все поля!');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const photo = e.target.result;
+                const ad = { id: Date.now(), title, description, category, photo };
+                ads.push(ad);
+                localStorage.setItem('ads', JSON.stringify(ads));
+                displayAds(ads);
+                clearForm();
+            };
+            reader.readAsDataURL(photoInput.files[0]);
+        }
+
+        function clearForm() {
+            document.getElementById('title').value = '';
+            document.getElementById('description').value = '';
+            document.getElementById('category').value = '';
+            document.getElementById('photo').value = '';
+        }
+
+        function displayAds(list) {
+            const container = document.getElementById('adsContainer');
+            container.innerHTML = '';
+            list.forEach(ad => {
+                const div = document.createElement('div');
+                div.className = 'ad';
+                div.innerHTML = `
+                    <img src="${ad.photo}" alt="Фото">
+                    <h3>${ad.title}</h3>
+                    <p>${ad.description}</p>
+                    <p class="category">Категория: ${ad.category}</p>
+                    <button class="delete-btn" onclick="deleteAd(${ad.id})">Удалить</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function deleteAd(id) {
+            if (confirm('Вы уверены, что хотите удалить объявление?')) {
+                ads = ads.filter(ad => ad.id !== id);
+                localStorage.setItem('ads', JSON.stringify(ads));
+                displayAds(ads);
+            }
+        }
+
+        function filterAds() {
+            const filter = document.getElementById('filter').value;
+            if (filter === '') {
+                displayAds(ads);
+            } else {
+                const filtered = ads.filter(ad => ad.category === filter);
+                displayAds(filtered);
+            }
+        }
+
+        displayAds(ads);
+    </script>
+</body>
+</html>

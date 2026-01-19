@@ -1,0 +1,7 @@
+minatar
+opencv-python
+numpy
+matplotlib
+pillow
+tqdm
+pyyaml
