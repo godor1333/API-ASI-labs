@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дневник растений - Клочкова Самарин</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Навигация -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="logo">🌱 Дневник растений</h1>
+                <div class="nav-links">
+                    <span id="username-display"></span>
+                    <button id="logout-btn" class="btn-secondary" style="display: none;">Выйти</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Форма входа/регистрации -->
+        <div id="auth-section" class="container">
+            <div class="auth-card">
+                <h2>Вход / Регистрация</h2>
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="login">Вход</button>
+                    <button class="tab-btn" data-tab="register">Регистрация</button>
+                </div>
+                
+                <form id="login-form" class="auth-form active">
+                    <input type="text" id="login-username" placeholder="Имя пользователя" required>
+                    <input type="password" id="login-password" placeholder="Пароль" required>
+                    <button type="submit" class="btn-primary">Войти</button>
+                </form>
+                
+                <form id="register-form" class="auth-form">
+                    <input type="text" id="register-username" placeholder="Имя пользователя" required>
+                    <input type="email" id="register-email" placeholder="Email" required>
+                    <input type="password" id="register-password" placeholder="Пароль" required>
+                    <button type="submit" class="btn-primary">Зарегистрироваться</button>
+                </form>
+                
+                <div id="auth-error" class="error-message"></div>
+            </div>
+        </div>
+
+        <!-- Основное приложение -->
+        <div id="main-section" class="container" style="display: none;">
+            <!-- Боковая панель -->
+            <div class="sidebar">
+                <button class="sidebar-btn active" data-view="plants">
+                    <span>🌿</span> Мои растения
+                </button>
+                <button class="sidebar-btn" data-view="reminders">
+                    <span>🔔</span> Напоминания
+                </button>
+                <button class="sidebar-btn" data-view="add-plant">
+                    <span>➕</span> Добавить растение
+                </button>
+            </div>
+
+            <!-- Контент -->
+            <div class="content">
+                <!-- Список растений -->
+                <div id="plants-view" class="view active">
+                    <h2>Мои растения</h2>
+                    <div id="plants-list" class="plants-grid"></div>
+                </div>
+
+                <!-- Добавление растения -->
+                <div id="add-plant-view" class="view">
+                    <h2>Добавить новое растение</h2>
+                    <form id="add-plant-form" class="form-card">
+                        <input type="text" id="plant-name" placeholder="Название растения" required>
+                        <input type="text" id="plant-species" placeholder="Вид/Сорт">
+                        <textarea id="plant-description" placeholder="Описание"></textarea>
+                        <button type="submit" class="btn-primary">Добавить растение</button>
+                    </form>
+                </div>
+
+                <!-- Напоминания -->
+                <div id="reminders-view" class="view">
+                    <h2>Предстоящие напоминания</h2>
+                    <div id="reminders-list"></div>
+                </div>
+
+                <!-- Детали растения -->
+                <div id="plant-detail-view" class="view">
+                    <button id="back-btn" class="btn-secondary">← Назад</button>
+                    <div id="plant-detail-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
