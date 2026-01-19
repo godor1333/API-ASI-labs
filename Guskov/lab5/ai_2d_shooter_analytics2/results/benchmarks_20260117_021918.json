@@ -1,0 +1,39 @@
+{
+  "detector": {
+    "model_name": "detector_detector_simple_fallback",
+    "avg_inference_time_ms": 0.24147510528564453,
+    "fps": 4141.21364112083,
+    "std_time_ms": 0.06877274218399651,
+    "min_time_ms": 0.20432472229003906,
+    "max_time_ms": 0.5338191986083984,
+    "n_iterations": 50
+  },
+  "detector_consistency": {
+    "model_name": "detector_detector_simple_fallback",
+    "is_consistent": true,
+    "n_runs": 5,
+    "all_results_match": true,
+    "unique_results": 1
+  },
+  "agents": {
+    "random": {
+      "model_name": "agent_random",
+      "avg_inference_time_ms": 0.0022029876708984375,
+      "fps": 453929.0043290043,
+      "std_time_ms": 0.0035281309905309637,
+      "min_time_ms": 0.0011920928955078125,
+      "max_time_ms": 0.03647804260253906,
+      "n_iterations": 100
+    },
+    "epsilon_greedy": {
+      "model_name": "agent_epsilon_greedy",
+      "avg_inference_time_ms": 0.7775759696960449,
+      "fps": 1286.0479734101104,
+      "std_time_ms": 7.505861530686878,
+      "min_time_ms": 0.003814697265625,
+      "max_time_ms": 75.45924186706543,
+      "n_iterations": 100
+    }
+  },
+  "timestamp": "20260117_021918"
+}

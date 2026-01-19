@@ -1,0 +1,9 @@
+2026-01-15 21:34:51,946 - INFO - Среда создана: space_invaders
+2026-01-15 21:34:51,951 - INFO - Игра завершена на шаге 17
+2026-01-15 21:34:51,955 - INFO - Игра завершена на шаге 17
+2026-01-15 21:34:51,958 - INFO - Игра завершена на шаге 16
+2026-01-15 21:34:51,963 - INFO - Игра завершена на шаге 17
+2026-01-15 21:34:51,966 - INFO - Игра завершена на шаге 16
+2026-01-15 21:34:52,085 - INFO - Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-01-15 21:34:52,085 - INFO - Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-01-15 21:34:52,721 - INFO - Тестирование агента: награда=0.0, шагов=16
